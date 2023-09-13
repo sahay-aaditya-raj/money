@@ -1,0 +1,36 @@
+<html>
+    <body><style>
+    .my-select {
+      width: 100%;
+      height: 30px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 5px;
+    }
+    .my-select option {
+      display: block;
+      padding: 5px;
+      text-decoration: none;
+      color: #000;
+    }
+    .my-select option:hover {
+      background-color: #ccc;
+    }
+    .my-select:hover{
+    background-color: pink;
+    }
+    </style>
+    <script>
+        function myFunction() {
+            alert("You clicked the button!");
+            const a = document.createElement('h1');
+            a.id = 'yay';
+            a.innerHTML = 'hohoho';
+            const b = document.querySelector('body')
+            b.prepend(a);
+          }
+          
+</script>
+    <button id = 'hehe' onclick="myFunction()">Click Me</button>
+</body>
+    </html>

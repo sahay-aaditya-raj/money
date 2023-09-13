@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    .input-option{
+        width: 150px;
+        padding: 10px;
+        margin-left:11px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        transition:0.2s;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+    }
+    .input-option:hover{
+        box-shadow: inset 0 0 8px 1px rgba(144, 92, 37, 0.7);
+        border: 1px solid #ccc;
+    }
+    .input-option:focus{
+        box-shadow: inset 0 0 8px 1px rgba(144, 92, 37, 0.7);
+        border: 1px solid #ccc;
+    }
+    .nav{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-content: center;
+        align-items: left;
+        gap: 15px;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: left;
+        max-width:450px;
+        margin-top:5px;
+        background: transparent;
+        font-size: 25px;
+        font-family: 'Comic Sans MS';
+    }
+    .search{
+        height: auto;
+        width: auto;
+        font-family:'Comic Sans MS';
+        font-size: 25px;
+        text-align: center;
+        background-color: #3097ff;
+        box-shadow: 0px 3px 4px 3px rgba(0, 0, 0, 0.25);
+        transition-duration: 0.4s;
+        border-radius: 20px;
+        border:none;
+    }
+    .search:hover{
+        background-color:#277fd7;
+    }
+    .home-button{
+        background-color: rgb(75, 117, 255);
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        text-align:center;
+        font-size:20px;
+        color:black;
+        padding: 5px;
+        border-radius:10px;
+        font-family: 'Comic Sans MS';
+        max-width: 60px;
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);
+    }
+    .home-button:hover{
+        background-color: rgb(65, 102, 224);
+    }
+    .no-entry{
+        font-family: 'Comic Sans MS';
+        font-size: 30px;
+        color: rgb(255, 61, 61);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #FFFFFF;
+        border: 1px solid #2A3069;
+        font-family: 'Comic Sans MS'
+      }
+      th {
+        background-color: #2A3069;
+        color: #FFFFFF;
+        padding: 10px;
+      }
+      td {
+        border: 1px solid #2A3069;
+        padding: 10px;
+      }
+      td:last-child {
+        text-align: right;
+        width: 120px;
+      }
+      td:first-child{
+        width:160px;
+      }
+      td:nth-child(2){
+        width:170px;
+      }
+      td:nth-child(3){
+        width:250px;
+      }
+      td:nth-child(4){
+        width:120px;
+      }
+      .total{
+        font-family:'Comic Sans MS';
+        margin-left:630px;
+        font-size: 20px;
+      }
+      .view{
+        height: auto;
+        width: 50px;
+        text-align: center;
+        background-color: #3097ff;
+        box-shadow: 0px 3px 4px 3px rgba(0, 0, 0, 0.25);
+        transition-duration: 0.4s;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        color: black;
+      }
+      .view:hover{
+        background-color: #2a87e3;
+      }
+      .search-content{
+        background: transparent;
+        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+        gap: 3px;
+      }
+</style>
+<form method='POST' action=''>
+    {% csrf_token %}
+<div class='middle-container'>
+    <a href='{% url "home" %}' class='home-button' style="margin-top:30px;"><b>Home</b></a>
+    <div class='nav'>
+        <div>
+        <div class='search-content'><div>From:</div><input type='date' name='from' class='input-option'/></div><br/>
+        <div class='search-content'><div>Type:</div><select name='type' class='input-option'>
+            <option value=''>All</option>
+            <option value='home'>Home</option>
+            <option value='office'>Office</option>
+        </select></div>
+        </div>
+        <div>
+            <div class='search-content'><div>To:</div><input type='date' name='to' class='input-option'/></div><br/>
+            <div class='search-content'><div>Order:</div><select name='order' class='input-option'>
+                <option value='def'>Default</option>
+                <option value='asc-date'>Asc - Date</option>
+                <option value='desc-date'>Desc - Date</option>
+                <option value='asc-amt'>Asc - Amount</option>
+                <option value='desc-amt'>Desc - Amount</option>
+            </select>
+            </div>
+        </div>
+                
+    </div>
+    <div style='text-align:left;'>
+        <button class='search'>Search</button>
+    </div>
+    {% if count == 0 %}
+        <div class='no-entry'>No entries found !</div>
+    {% else %}
+    <div style='width:850px; font-size:16px;' >
+        <div class='total'>Total: <b>₹ {{ total | intcomma }}</b></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Mode Of Payement</th>
+                    <th>Description</th>
+                    <th>Expense Type</th>
+                    <th>Amount (INR)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entry in entries %}   
+                <tr>
+                    <!--<td style='padding:0px;'><a href ='{% url "data" entry.id %}' class='view'>View</a></td>-->
+                    <td><a style="text-decoration:none;" href='{% url "data" entry.id %}'>{{ entry.date|date:"d F Y" }}</a></td>
+                    <td>{{ entry.type }}</td>
+                    <td>{{ entry }}</td>
+                    <td>{{ entry.exp_type }}</td>
+                    <td>{{ entry.amount |intcomma }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+</form>
+
+{% endblock %}

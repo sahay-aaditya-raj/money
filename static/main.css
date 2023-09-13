@@ -1,0 +1,33 @@
+body, html {
+        height: 100%; 
+        margin: 0;
+        padding: 0;
+        width : 100vw;
+        height: 100vh;
+        background: linear-gradient(122deg, #F4F4F4 70.23%, #2A3069 71.02%);
+    }
+
+.middle-container{
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: left;
+margin-left: 40px;
+margin-right: 40px;
+
+}
+
+.button {
+    padding: 9px 25px;
+    background:transparent;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    cursor: pointer;
+    width:100%;
+    height:100%;
+    font-family: 'Comic Sans MS';
+    color: rgb(0, 0, 0);
+}

@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .container-elem-new{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        border-radius: 5px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        text-align: center;
+        max-width:450px;
+        margin-top:5px;
+        background-color: #c54b8e;
+        
+    }
+    #submit{
+        height: 60px;
+        width: 450px;
+        text-align: center;
+        background: linear-gradient(122deg, #F4F4F4 70.23%, #2A3069 71.02%);
+        box-shadow: 0px 3px 4px 3px rgba(0, 0, 0, 0.25);
+        transition-duration: 0.4s;
+        border-radius: 20px;
+    }
+    #submit:hover{
+        background: linear-gradient(122deg, #cacaca 70.23%, #252a5c 71.02%);
+    }
+    .input-option{
+        width: 324px;
+        padding: 10px;
+        margin-left:11px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        transition:0.2s;
+    }
+    .input-option:hover{
+        box-shadow: inset 0 0 8px 1px rgba(144, 92, 37, 0.7);
+    }
+    .input-option:focus{
+        box-shadow: inset 0 0 8px 1px rgba(144, 92, 37, 0.7);
+        border: 1px solid #ccc;
+    }
+    .input-pay{
+        width:302px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+    }
+    .input-pay:hover{
+        box-shadow: inset 0 0 8px 1px rgba(144, 92, 37, 0.7);
+    }
+    .text-hint {
+        display:grid;
+        grid-template-columns: 1fr 4fr;
+        gap:20px ;
+        justify-content: left;
+        align-items: left;
+        text-align: left;
+        width:100%;
+        font-size: 25px;
+        font-family: 'Comic Sans MS';
+        border:solid;
+        border-top:0 ;
+        border-left:0 ;
+        border-right:0 ;
+        padding-bottom: 10px;
+      }
+      .message{
+        background-color: rgb(255, 94, 94);
+        width:200px;
+        height:27px;
+        font-family: 'Comic Sans MS';
+        font-size: 20px;
+        border: 2px solid;
+        border-color: rgb(255, 66, 66);
+        border-radius: 5px;
+      }
+      .home-button{
+        background-color: rgb(75, 117, 255);
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        text-align:center;
+        font-size:20px;
+        color:black;
+        padding: 5px;
+        border-radius:10px;
+        font-family: 'Comic Sans MS';
+        max-width: 60px;
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);
+    }
+    .home-button:hover{
+        background-color: rgb(65, 102, 224);
+    }
+      
+</style>
+
+<form method='POST'>
+{% csrf_token %}
+    <div class='middle-container'>
+        <div style='margin-top:100px;'><a href='{% url "home" %}' class='home-button'><b>Home</b></a></div>
+        <div class = 'container-elem-new'>
+            
+            <div class='text-hint'>Type:
+                <select class='input-option' id='exp_type' name='exp_type'>
+                    <option value='Empty'>Select Expense Type</option>
+                    {% for exp in exp_type %}
+                    <option value={{exp}}>{{ exp }}</option>
+                    {% endfor %}
+                </select></div>
+            <div class='text-hint'>Mode:
+            <select class='input-option' id='p-Drop' name='p-Drop'>
+                <option value='Empty'>Select Payement Mode</option>
+                {% for drop in dropdown %}
+                <option value={{drop}}>{{drop}}</option>
+                {% endfor %}
+            </select></div>
+            
+            <div class='text-hint'>
+                Amount:
+                <input class='input-pay'  type='text' id='amount' name='amount' placeholder='Enter your Amount in INR'/>
+            </div>
+
+            <div class='text-hint'>
+                Date:
+                <input class='input-pay' style='margin-left:10px;' type='date' id='date' name='date' min="2023-01-01" max="2028-12-31"/>
+            </div>
+
+            <div class='text-hint' style='gap:1px;'>
+                Comment:
+                <input class='input-pay' style='margin-left:1px;' type='text' id='description' name='description' placeholder='Description'/>
+            </div>
+
+            <div id='submit'>
+                <button class='button' style='border:None; text-align:center;' type = 'Submit' value = 'Submit'>Submit</button>
+            </div>
+            
+            {% if msg == 'neg' %}
+
+                <div class='message' style='width:400px;'>
+                    <b>Please Select Payement/Expense !</b>
+                </div>
+                <script>alert('Please Select the Payement Mode/Expense Type !')</script>
+
+            {% elif msg == 'pos' %}
+
+                <div class='message' style='background-color: rgb(57, 144, 57);
+                border-color: rgb(66, 255, 66);'>
+                    <b>Success Full !</b>
+                </div>
+                <script>alert('Entry Added Successfully !')</script>
+
+            {% elif msg == 'amount' %}
+
+            <div class='message' style='width:400px;'>
+                <b>Amount Must be an Integer/Decimal !</b>
+            </div>
+            <script>alert('Amount Must be an Integer !')</script>
+            
+                
+            {% elif msg == 'error' %}
+
+                <script>alert('Error !')</script>
+
+            {% else %}
+            
+            {% endif %}
+            
+
+        </div>
+    </div>
+
+
+</form>
+
+{% endblock %}
