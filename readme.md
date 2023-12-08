@@ -1,2 +1,1 @@
-USE
-python 3.11.5
+# money management app using django
